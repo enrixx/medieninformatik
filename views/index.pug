@@ -1,0 +1,18 @@
+extends layout.pug
+
+block content
+
+    .d-flex.gap-3
+        img(src="img/regensburgpic.jpg", alt="regensburg", style="width:50%;height:auto;")
+        if (user == undefined)
+            form.w-50(action="/login", method="post")
+                .form-group
+                    label(for="InputEmail") Email address
+                    input#InputEmail.form-control(type="email", placeholder="Enter eingeben", name="email")
+                .form-group
+                    label(for="InputPassword") Password
+                    input#InputPassword.form-control(type="password", placeholder="Passwort eingeben", name="password")
+                .form-group
+                    input.btn.btn-primary.mt-1(type="submit", value="Login")
+                if login_error
+                    .alert.alert-danger.mt-1(role="alert") #{login_error}

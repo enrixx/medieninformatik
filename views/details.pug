@@ -1,0 +1,117 @@
+extends layout.pug
+
+block content
+    if((weatherdata.length === 0) || (weatherdata.length === undefined))
+        .text-center
+            h1.card-title#station-name #{station.name}
+        div#chart
+        h2.text-center.text-danger.pb-3 NO DATA
+    else
+        .card.gap-3
+            .card-body.row.gap-3
+                .card.col.bg-dark.text-white
+                    .card-body
+                        h2.card-title#station-name #{station.name}
+                        h6.card-text Lat: #{station.x}
+                        h6.card-text Lon: #{station.y}
+                .card.col.bg-dark.text-white
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Wetter
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${weatherIcon}`, alt="Weather Icon")
+                        .container.row
+                            h6.card-text#weather_code #{weatherNew}
+                .card.col.bg-dark.text-white
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Temperatur
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${temperatureIcon}`, alt="Temperature Icon")
+                        .container.row
+                            .container.col
+                                h6.card-text #{weatherdata[0].temperatur} Grad
+                                h6.card-text Max: #{weatherdata[0].max_temperature}
+                                h6.card-text Min: #{weatherdata[0].min_temperature}
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${temperatureArrow}`, alt="Temperature Arrow")
+                .card.col.bg-dark.text-white
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Wind
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src="/img/wind.svg", alt="Wind Icon")
+                        .container.row
+                            .container.col
+                                h6.card-text #{weatherdata[0].wind} bft
+                                h6.card-text #{windNew}
+                                h6.card-text Max: #{weatherdata[0].max_wind}
+                                h6.card-text Min: #{weatherdata[0].min_wind}
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${windArrow}`, alt="Wind Arrow")
+                .card.col.bg-dark.text-white
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Luftdruck
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src="/img/speedometer.svg", alt="Wind Icon")
+                        .container.row
+                            .container.col
+                                h6.card-text #{weatherdata[0].pressure} hpa
+                                h6.card-text Max: #{weatherdata[0].max_pressure}
+                                h6.card-text Min: #{weatherdata[0].min_pressure}
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${pressureArrow}`, alt="Pressure Arrow")
+
+        div#chart
+
+        table.table
+            thead
+                tr
+                    th(scope='col') Zeitpunkt
+                    th(scope='col') Wetter
+                    th(scope='col') Temperatur
+                    th(scope='col') Wind
+                    th(scope='col') Luftdruck
+                    th(scope='col')
+            tbody
+                each data in weatherdata
+                    tr
+                        td #{data.times}
+                        td #{data.weather_code}
+                        td #{data.temperatur}
+                        td #{data.wind}
+                        td #{data.pressure}
+                        td
+                            a(href="/delete/reading/" + data.id)
+                                svg.bi.bi-x-circle(xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewbox='0 0 16 16')
+                                    path(d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z')
+                                    path(d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z')
+
+
+    form(id="add_data_form" action="/details/" + station.id method="post")
+        .form-group
+            .row
+                .col
+                    input(type="number", class="form-control", name="code", id="code", placeholder="Code", min="200", required)
+                .col
+                    input(type="number", class="form-control", name="temperatur", id="temperatur", placeholder="Temperatur", min="-273.15", step="any", required)
+                .col
+                    input(type="number", class="form-control", name="speed", id="speed", placeholder="Windgeschwindigkeit", min="0", step="any", required)
+                .col
+                    input(type="number", class="form-control", name="direction", id="direction", max="360", placeholder="Windrichtung", min="0", step="any", required)
+                .col
+                    input(type="number", class="form-control", name="pressure", id="pressure", placeholder="Luftdruck", min="0", step="any", required)
+            .form-group
+                button.btn.btn-primary.mt-2 Messung Hinzufügen
+
+    a.btn.btn-warning.mt-2(href="/details/api/add/" + station.id, role="button") Automatische Messung Hinzufügen
+
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/frappe-charts@1.2.4/dist/frappe-charts.min.iife.js")
+    script(src="/script/script.js")
+

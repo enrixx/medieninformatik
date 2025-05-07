@@ -1,0 +1,88 @@
+extends layout.pug
+
+block content
+    h1 Dashboard
+
+    each station, index in stations
+        .card.mb-2
+            .card-body.row
+                .card.col.bg-dark.text-white
+                    .card-body
+                        h2.card-title #{station.name}
+                        h6.card-text Lat: #{station.x}
+                        h6.card-text Lon: #{station.y}
+                .card.col.bg-dark.text-white.ms-3
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Wetter
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${weatherIcons[index]}`, alt="Weather Icon")
+                        .container.row
+                            h6.card-text #{weatherNew[index]}
+                .card.col.bg-dark.text-white.ms-3
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Temperatur
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${temperatureIcons[index]}`, alt="Temperature Icon")
+                        .container.row
+                            .container.col
+                                h6.card-text #{station.temperatur} Grad
+                                h6.card-text Max: #{station.max_temperature}
+                                h6.card-text Min: #{station.min_temperature}
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${temperatureArrows[index]}`, alt="Temperature Arrow")
+                .card.col.bg-dark.text-white.ms-3
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Wind
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src="/img/wind.svg", alt="Wind Icon")
+                        .container.row
+                            .container.col
+                                h6.card-text #{station.wind} bft
+                                h6.card-text #{windNew[index]}
+                                h6.card-text Max: #{station.max_wind}
+                                h6.card-text Min: #{station.min_wind}
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${windArrows[index]}`, alt="Wind Arrow")
+                .card.col.bg-dark.text-white.ms-3
+                    .card-body
+                        .container.row
+                            .container.col
+                                h2.card-title Luftdruck
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src="/img/speedometer.svg", alt="Wind Icon")
+                        .container.row
+                            .container.col
+                                h6.card-text #{station.pressure} hpa
+                                h6.card-text Max: #{station.max_pressure}
+                                h6.card-text Min: #{station.min_pressure}
+                            .container.col.d-flex.justify-content-end
+                                img.size-32(src=`${pressureArrows[index]}`, alt="Pressure Arrow")
+                .container
+                    .row.d-inline-flex
+                        .col.p-1
+                            a(href="/details/" + station.id)
+                                svg.bi.bi-folder(xmlns='http://www.w3.org/2000/svg', width='16', height='16', fill='currentColor', viewBox='0 0 16 16')
+                                    path(d='M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z')
+                        .col.p-1
+                            a(href="/delete/station/" + station.id)
+                                svg.bi.bi-trash(xmlns='http://www.w3.org/2000/svg', width='16', height='16', fill='currentColor', viewBox='0 0 16 16')
+                                    path(d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z')
+                                    path(d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z')
+
+    form(id="add_station_form" action="/dashboard" method="post")
+        .form-group
+            .row
+                .col
+                    input(type="text", class="form-control", name="name", id="name", placeholder="Ort", pattern="^[\\p{L} ]+$", required, title="Please enter only alphabet characters")
+                .col
+                    input(type="number", class="form-control", name="x", id="x", placeholder="Breitengrad", min="-90", max="90", step="any")
+                .col
+                    input(type="number", class="form-control", name="y", id="y", placeholder="Längengrad", min="-90", max="90", step="any")
+        .form-group
+            button.btn.btn-primary.mt-2 Station Hinzufügen

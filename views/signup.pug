@@ -1,0 +1,19 @@
+extends layout.pug
+
+block content
+
+    form.w-50(action="/signup" method="post")
+        .form-group
+            label(for="InputEmail") Email
+            input#InputEmail.form-control(type="email", placeholder="Enter eingeben", name="email")
+        .form-group
+            label(for="InputName") Vorname
+            input#InputName.form-control(type="vorname", placeholder="Vorname", name="vorname", pattern="^[\\p{L}]+$", required, title="Please enter only alphabet characters!")
+        .form-group
+            label(for="InputNachname") Nachname
+            input#InputNachname.form-control(type="nachname", placeholder="Nachname", name="nachname", pattern="^[\\p{L}]+$", required, title="Please enter only alphabet characters!")
+        .form-group
+            label(for="InputPassword") Password
+            input#InputPassword.form-control(type="password", placeholder="Passwort eingeben", name="password")
+        .form-group
+            input.btn.btn-primary.mt-1(type="submit" value="Registrieren")
