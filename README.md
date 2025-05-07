@@ -1,2 +1,1 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/SIm0-BZc)
-# mi-weathertop_starter
+This is my Weathertop app for the Lecture "Medieninformatik" in sommer semester 2023 at the OTH Regensburg.
